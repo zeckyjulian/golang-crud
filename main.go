@@ -2,7 +2,7 @@ package main
 
 import (
 	"go-web-native/config"
-	controllers "go-web-native/controllers"
+	"go-web-native/controllers"
 	"log"
 	"net/http"
 )

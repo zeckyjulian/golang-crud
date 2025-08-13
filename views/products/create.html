@@ -32,16 +32,31 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-12">
-                <h2>Create Category</h2>
+                <h2>Create Product</h2>
                 <hr>
                 
-                <form action="/categories/create" method="post" class="col-md-6">
+                <form action="/products/create" method="post" class="col-md-6">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Category Name" autocomplete="off" required>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Product Name" autocomplete="off" required>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" name="category_id" aria-label="Default select example">
+                            {{ range .categories }}
+                            <option value="{{ .Id }}">{{ .Name }}</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" class="form-control" name="stock" id="stock" placeholder="Product Stock" autocomplete="off" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
                     </div>
                     <div class="col-md-6">
-                        <a href="/categories" class="btn btn-secondary">Back</a>
+                        <a href="/products" class="btn btn-secondary">Back</a>
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                 </form>

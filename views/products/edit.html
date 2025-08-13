@@ -44,7 +44,7 @@
                     <div class="mb-3">
                         <select class="form-select" name="category_id" aria-label="Default select example">
                             {{ range .categories }}
-                            <option value="{{ .Id }}">{{ .Name }}</option>
+                            <option value="{{ .Id }}" {{ if eq .Id $.product.Category.Id }}selected{{ end }}>{{ .Name }}</option>
                             {{ end }}
                         </select>
                     </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-md-6">
                         <a href="/products" class="btn btn-secondary">Back</a>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>

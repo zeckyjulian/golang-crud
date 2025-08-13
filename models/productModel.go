@@ -72,6 +72,7 @@ func DetailDataProduct(id int) entities.Product {
 		SELECT
 			products.id,
 			products.name,
+			categories.id AS category_id,
 			categories.name AS category_name,
 			products.stock,
 			products.description,
@@ -85,6 +86,7 @@ func DetailDataProduct(id int) entities.Product {
 	if err := row.Scan(
 		&product.Id,
 		&product.Name,
+		&product.Category.Id,
 		&product.Category.Name,
 		&product.Stock,
 		&product.Description,

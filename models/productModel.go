@@ -66,3 +66,33 @@ func CreateDataProduct(product entities.Product) bool {
 
 	return lastInsertId > 0
 }
+
+func DetailDataProduct(id int) entities.Product {
+	row := config.DB.QueryRow(`
+		SELECT
+			products.id,
+			products.name,
+			categories.name AS category_name,
+			products.stock,
+			products.description,
+			products.created_at,
+			products.updated_at
+		FROM products
+		JOIN categories ON products.category_id = categories.id
+		WHERE products.id = ?`, id)
+
+	var product entities.Product
+	if err := row.Scan(
+		&product.Id,
+		&product.Name,
+		&product.Category.Name,
+		&product.Stock,
+		&product.Description,
+		&product.CreatedAt,
+		&product.UpdatedAt,
+	); err != nil {
+		panic(err.Error())
+	}
+
+	return product
+}

@@ -68,7 +68,23 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func DetailProduct(w http.ResponseWriter, r *http.Request) {
+	idString := r.URL.Query().Get("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		panic(err)
+	}
 
+	product := models.DetailDataProduct(id)
+	data := map[string]any{
+		"product": product,
+	}
+
+	temp, err := template.ParseFiles("views/products/detail.html")
+	if err != nil {
+		panic(err)
+	}
+
+	temp.Execute(w, data)
 }
 
 func EditProduct(w http.ResponseWriter, r *http.Request) {

@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	categories := models.GetCategories()
+func IndexCategory(w http.ResponseWriter, r *http.Request) {
+	categories := models.GetDataCategories()
 	data := map[string]any{
 		"categories": categories,
 	}
@@ -23,7 +23,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, data)
 }
 
-func Create(w http.ResponseWriter, r *http.Request) {
+func CreateCategory(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		temp, err := template.ParseFiles("views/categories/create.html")
 		if err != nil {
@@ -40,7 +40,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		category.CreatedAt = time.Now()
 		category.UpdatedAt = time.Now()
 
-		if ok := models.CreateCategory(category); !ok {
+		if ok := models.CreateDataCategory(category); !ok {
 			temp, _ := template.ParseFiles("views/categories/create.html")
 			temp.Execute(w, nil)
 		}
@@ -49,7 +49,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Edit(w http.ResponseWriter, r *http.Request) {
+func EditCategory(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		temp, err := template.ParseFiles("views/categories/edit.html")
 		if err != nil {
@@ -62,7 +62,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		category := models.DetailCategory(id)
+		category := models.DetailDataCategory(id)
 		data := map[string]any{
 			"category": category,
 		}
@@ -82,7 +82,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		category.Name = r.FormValue("name")
 		category.UpdatedAt = time.Now()
 
-		if ok := models.UpdateCategory(id, category); !ok {
+		if ok := models.UpdateDataCategory(id, category); !ok {
 			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
 			return
 		}
@@ -91,14 +91,14 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Delete(w http.ResponseWriter, r *http.Request) {
+func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 	idString := r.URL.Query().Get("id")
 	id, err := strconv.Atoi(idString)
 	if err != nil {
 		panic(err)
 	}
 
-	if err := models.DeleteCategory(id); err != nil {
+	if err := models.DeleteDataCategory(id); err != nil {
 		panic(err)
 	}
 

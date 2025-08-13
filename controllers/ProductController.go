@@ -145,5 +145,15 @@ func EditProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
+	idString := r.URL.Query().Get("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		panic(err)
+	}
 
+	if err := models.DeleteDataProduct(id); err != nil {
+		panic(err)
+	}
+
+	http.Redirect(w, r, "/products", http.StatusSeeOther)
 }

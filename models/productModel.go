@@ -115,3 +115,8 @@ func UpdateDataProduct(id int, product entities.Product) bool {
 
 	return result > 0
 }
+
+func DeleteDataProduct(id int) error {
+	_, err := config.DB.Exec(`DELETE FROM products WHERE id = ?`, id)
+	return err
+}

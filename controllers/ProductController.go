@@ -88,7 +88,60 @@ func DetailProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditProduct(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		temp, err := template.ParseFiles("views/products/edit.html")
+		if err != nil {
+			panic(err)
+		}
 
+		idString := r.URL.Query().Get("id")
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+
+		product := models.DetailDataProduct(id)
+		categories := models.GetDataCategories()
+		data := map[string]any{
+			"categories": categories,
+			"product":    product,
+		}
+
+		temp.Execute(w, data)
+	}
+
+	if r.Method == "POST" {
+		var product entities.Product
+
+		idString := r.FormValue("id")
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+
+		categoryId, err := strconv.Atoi(r.FormValue("category_id"))
+		if err != nil {
+			panic(err)
+		}
+
+		stock, err := strconv.Atoi(r.FormValue("stock"))
+		if err != nil {
+			panic(err)
+		}
+
+		product.Name = r.FormValue("name")
+		product.Category.Id = uint(categoryId)
+		product.Stock = int64(stock)
+		product.Description = r.FormValue("description")
+		product.UpdatedAt = time.Now()
+
+		if ok := models.UpdateDataProduct(id, product); !ok {
+			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusTemporaryRedirect)
+			return
+		}
+
+		http.Redirect(w, r, "/products", http.StatusSeeOther)
+	}
 }
 
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
